@@ -1,0 +1,130 @@
+{% extends "accounts/accounts_base.html" %}
+{% load static %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body text-center">
+                    {% if user.photo %}
+                    <img src="{{ user.photo.url }}" class="rounded-circle mb-3" width="150" height="150"
+                        alt="Photo de profil">
+                    {% else %}
+                    <img src="{% static 'images/default-profile.png' %}" class="rounded-circle mb-3" width="150"
+                        height="150" alt="Photo de profil par défaut">
+                    {% endif %}
+
+                    <h5 class="card-title">{{ user.get_full_name }}</h5>
+                    <p class="text-muted mb-1">
+                        <span
+                            class="badge bg-{% if user.is_admin %}danger{% elif user.is_formateur %}info{% else %}secondary{% endif %}">
+                            {{ user.get_role_display }}
+                        </span>
+                    </p>
+
+                    <div class="d-flex justify-content-center mb-2 mt-3">
+                        <a href="{% url 'accounts:change_password' %}" class="btn btn-outline-primary me-2">
+                            Changer mot de passe
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h4>Informations du profil</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nom d'utilisateur</label>
+                                <input type="text" class="form-control" value="{{ user.username }}" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Rôle</label>
+                                <input type="text" class="form-control" value="{{ user.get_role_display }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.first_name.id_for_label }}" class="form-label">Prénom</label>
+                                {{ form.first_name }}
+                                {% if form.first_name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.first_name.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.last_name.id_for_label }}" class="form-label">Nom</label>
+                                {{ form.last_name }}
+                                {% if form.last_name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.last_name.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.email.errors.0 }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.telephone.id_for_label }}" class="form-label">Téléphone</label>
+                            {{ form.telephone }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.date_naissance.id_for_label }}" class="form-label">Date de
+                                naissance</label>
+                            {{ form.date_naissance }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.adresse.id_for_label }}" class="form-label">Adresse</label>
+                            {{ form.adresse }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.photo.id_for_label }}" class="form-label">Photo de profil</label>
+                            <input type="file" name="photo" class="form-control" id="{{ form.photo.id_for_label }}">
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if user.is_formateur %}
+            <div class="card mt-4 shadow-sm">
+                <div class="card-header bg-white">
+                    <h4>Informations Formateur</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Ajoutez ici les champs spécifiques aux formateurs -->
+                    <p class="text-muted">Informations supplémentaires pour les formateurs...</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

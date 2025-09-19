@@ -72,7 +72,7 @@ class User(AbstractUser):
     telephone = models.CharField(max_length=15, blank=True, null=True)
     adresse = models.CharField(max_length=255, blank=True, null=True)
     date_naissance = models.DateField(blank=True, null=True)
-    photo = models.ImageField(upload_to='photos/', blank=True, null=True)
+    photo = models.ImageField(upload_to='profiles/', blank=True, null=True)
     
     
      # Utilisation de l'email comme identifiant principal

@@ -38,17 +38,13 @@
               <a>>Formations</a>
             </li>
             {% if user.is_authenticated %}
-              {% if user.EST_FORMATEUR %}
+              {% if user.is_formateur %}
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Espace Formateur</a>
+                  <a class="nav-link" href="{% url 'formateurs:dashboard' %}">Espace Formateur</a>
                 </li>
-              {% elif user.EST_APPRENTIS %}
+              {% elif user.is_apprenti %}
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'apprentis:dashboard' %}">Espace Apprenti</a>
-                </li>
-              {% elif user.EST_ADMIN %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'apprentis:dashboard' %}">Espace Administrateur</a>
                 </li>
               {% endif %}
             {% endif %}
